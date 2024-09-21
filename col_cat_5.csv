@@ -1,0 +1,441 @@
+Column,Type
+Dissemination Identifier,Identifier
+Original Dissemination Identifier,Identifier
+Action type,Cat
+Event type,Cat
+Event timestamp,Date
+Amendment indicator,Cat
+Asset Class,Cat
+Product name,Cat
+Cleared,Cat
+Mandatory clearing indicator,Cat
+Execution Timestamp,Date
+Effective Date,Date
+Expiration Date,Date
+Maturity date of the underlier,Date
+Non-standardized term indicator,Cat
+Platform identifier,Cat
+Prime brokerage transaction indicator,Cat
+Block trade election indicator,Cat
+Large notional off-facility swap election indicator,Cat
+Notional amount-Leg 1,Amt
+Notional amount-Leg 2,Amt
+Notional currency-Leg 1,Cat
+Notional currency-Leg 2,Cat
+Notional quantity-Leg 1,Amt
+Notional quantity-Leg 2,Amt
+Total notional quantity-Leg 1,Amt
+Total notional quantity-Leg 2,Amt
+Quantity frequency multiplier-Leg 1,Cat
+Quantity frequency multiplier-Leg 2,Cat
+Quantity unit of measure-Leg 1,Cat
+Quantity unit of measure-Leg 2,Cat
+Quantity frequency-Leg 1,Cat
+Quantity frequency-Leg 2,Cat
+Notional amount in effect on associated effective date-Leg 1,Amt
+Notional amount in effect on associated effective date-Leg 2,Amt
+Effective date of the notional amount-Leg 1,Date
+Effective date of the notional amount-Leg 2,Date
+End date of the notional amount-Leg 1,Date
+End date of the notional amount-Leg 2,Date
+Call amount,Amt
+Call currency,Cat
+Put amount,Amt
+Put currency,Cat
+Exchange rate,Amt
+Exchange rate basis,Amt
+First exercise date,Date
+Fixed rate-Leg 1,Amt
+Fixed rate-Leg 2,Amt
+Option Premium Amount,Amt
+Option Premium Currency,Cat
+Price,Amt
+Price unit of measure,Cat
+Spread-Leg 1,Amt
+Spread-Leg 2,Amt
+Spread currency-Leg 1,Cat
+Spread currency-Leg 2,Cat
+Strike Price,Amt
+Strike price currency/currency pair,Cat
+Post-priced swap indicator,Cat
+Price currency,Cat
+Price notation,Cat
+Spread notation-Leg 1,Cat
+Spread notation-Leg 2,Cat
+Strike price notation,Cat
+Fixed rate day count convention-leg 1,Cat
+Fixed rate day count convention-leg 2,Cat
+Floating rate day count convention-leg 1,Cat
+Floating rate day count convention-leg 2,Cat
+Floating rate reset frequency period-leg 1,Cat
+Floating rate reset frequency period-leg 2,Cat
+Floating rate reset frequency period multiplier-leg 1,Amt
+Floating rate reset frequency period multiplier-leg 2,Amt
+Other payment amount,Amt
+Fixed rate payment frequency period-Leg 1,Cat
+Floating rate payment frequency period-Leg 1,Cat
+Fixed rate payment frequency period-Leg 2,Cat
+Floating rate payment frequency period-Leg 2,Cat
+Fixed rate payment frequency period multiplier-Leg 1,Cat
+Floating rate payment frequency period multiplier-Leg 1,Cat
+Fixed rate payment frequency period multiplier-Leg 2,Amt
+Floating rate payment frequency period multiplier-Leg 2,Amt
+Other payment type,Cat
+Other payment currency,Cat
+Settlement currency-Leg 1,Cat
+Settlement currency-Leg 2,Cat
+Settlement location,Cat
+Collateralisation category,Cat
+Custom basket indicator,Cat
+Index factor,Cat
+Underlier ID-Leg 1,Cat
+Underlier ID-Leg 2,Cat
+Underlier ID source-Leg 1,Cat
+Underlying Asset Name,Cat
+Underlying asset subtype or underlying contract subtype-Leg 1,Cat
+Underlying asset subtype or underlying contract subtype-Leg 2,Cat
+Embedded Option type,Cat
+Option Type,Cat
+Option Style,Cat
+Package indicator,Cat
+Package transaction price,Amt
+Package transaction price currency,Cat
+Package transaction price notation,Cat
+Package transaction spread,Cat
+Package transaction spread currency,Cat
+Package transaction spread notation,Cat
+Physical delivery location-Leg 1,Cat
+Delivery Type,Cat
+Unique Product Identifier,Cat
+UPI FISN,Cat
+UPI Underlier Name,Cat
+Dissemination Identifier_dtype,Cat
+Dissemination Identifier_d_length,Cat
+Dissemination Identifier_d_isnull,Cat
+Original Dissemination Identifier_dtype,Cat
+Original Dissemination Identifier_d_length,Cat
+Original Dissemination Identifier_d_isnull,Cat
+Action type_dtype,Cat
+Action type_d_length,Cat
+Action type_d_isnull,Cat
+Event type_dtype,Cat
+Event type_d_length,Cat
+Event type_d_isnull,Cat
+Event timestamp_dtype,Cat
+Event timestamp_d_length,Cat
+Event timestamp_d_isnull,Cat
+Amendment indicator_dtype,Cat
+Amendment indicator_d_length,Cat
+Amendment indicator_d_isnull,Cat
+Asset Class_dtype,Cat
+Asset Class_d_length,Cat
+Asset Class_d_isnull,Cat
+Product name_dtype,Cat
+Product name_d_length,Cat
+Product name_d_isnull,Cat
+Cleared_dtype,Cat
+Cleared_d_length,Cat
+Cleared_d_isnull,Cat
+Mandatory clearing indicator_dtype,Cat
+Mandatory clearing indicator_d_length,Cat
+Mandatory clearing indicator_d_isnull,Cat
+Execution Timestamp_dtype,Cat
+Execution Timestamp_d_length,Cat
+Execution Timestamp_d_isnull,Cat
+Effective Date_dtype,Cat
+Effective Date_d_length,Cat
+Effective Date_d_isnull,Cat
+Expiration Date_dtype,Cat
+Expiration Date_d_length,Cat
+Expiration Date_d_isnull,Cat
+Maturity date of the underlier_dtype,Cat
+Maturity date of the underlier_d_length,Cat
+Maturity date of the underlier_d_isnull,Cat
+Non-standardized term indicator_dtype,Cat
+Non-standardized term indicator_d_length,Cat
+Non-standardized term indicator_d_isnull,Cat
+Platform identifier_dtype,Cat
+Platform identifier_d_length,Cat
+Platform identifier_d_isnull,Cat
+Prime brokerage transaction indicator_dtype,Cat
+Prime brokerage transaction indicator_d_length,Cat
+Prime brokerage transaction indicator_d_isnull,Cat
+Block trade election indicator_dtype,Cat
+Block trade election indicator_d_length,Cat
+Block trade election indicator_d_isnull,Cat
+Large notional off-facility swap election indicator_dtype,Cat
+Large notional off-facility swap election indicator_d_length,Cat
+Large notional off-facility swap election indicator_d_isnull,Cat
+Notional amount-Leg 1_dtype,Cat
+Notional amount-Leg 1_d_length,Cat
+Notional amount-Leg 1_d_isnull,Cat
+Notional amount-Leg 2_dtype,Cat
+Notional amount-Leg 2_d_length,Cat
+Notional amount-Leg 2_d_isnull,Cat
+Notional currency-Leg 1_dtype,Cat
+Notional currency-Leg 1_d_length,Cat
+Notional currency-Leg 1_d_isnull,Cat
+Notional currency-Leg 2_dtype,Cat
+Notional currency-Leg 2_d_length,Cat
+Notional currency-Leg 2_d_isnull,Cat
+Notional quantity-Leg 1_dtype,Cat
+Notional quantity-Leg 1_d_length,Cat
+Notional quantity-Leg 1_d_isnull,Cat
+Notional quantity-Leg 2_dtype,Cat
+Notional quantity-Leg 2_d_length,Cat
+Notional quantity-Leg 2_d_isnull,Cat
+Total notional quantity-Leg 1_dtype,Cat
+Total notional quantity-Leg 1_d_length,Cat
+Total notional quantity-Leg 1_d_isnull,Cat
+Total notional quantity-Leg 2_dtype,Cat
+Total notional quantity-Leg 2_d_length,Cat
+Total notional quantity-Leg 2_d_isnull,Cat
+Quantity frequency multiplier-Leg 1_dtype,Cat
+Quantity frequency multiplier-Leg 1_d_length,Cat
+Quantity frequency multiplier-Leg 1_d_isnull,Cat
+Quantity frequency multiplier-Leg 2_dtype,Cat
+Quantity frequency multiplier-Leg 2_d_length,Cat
+Quantity frequency multiplier-Leg 2_d_isnull,Cat
+Quantity unit of measure-Leg 1_dtype,Cat
+Quantity unit of measure-Leg 1_d_length,Cat
+Quantity unit of measure-Leg 1_d_isnull,Cat
+Quantity unit of measure-Leg 2_dtype,Cat
+Quantity unit of measure-Leg 2_d_length,Cat
+Quantity unit of measure-Leg 2_d_isnull,Cat
+Quantity frequency-Leg 1_dtype,Cat
+Quantity frequency-Leg 1_d_length,Cat
+Quantity frequency-Leg 1_d_isnull,Cat
+Quantity frequency-Leg 2_dtype,Cat
+Quantity frequency-Leg 2_d_length,Cat
+Quantity frequency-Leg 2_d_isnull,Cat
+Notional amount in effect on associated effective date-Leg 1_dtype,Cat
+Notional amount in effect on associated effective date-Leg 1_d_length,Cat
+Notional amount in effect on associated effective date-Leg 1_d_isnull,Cat
+Notional amount in effect on associated effective date-Leg 2_dtype,Cat
+Notional amount in effect on associated effective date-Leg 2_d_length,Cat
+Notional amount in effect on associated effective date-Leg 2_d_isnull,Cat
+Effective date of the notional amount-Leg 1_dtype,Cat
+Effective date of the notional amount-Leg 1_d_length,Cat
+Effective date of the notional amount-Leg 1_d_isnull,Cat
+Effective date of the notional amount-Leg 2_dtype,Cat
+Effective date of the notional amount-Leg 2_d_length,Cat
+Effective date of the notional amount-Leg 2_d_isnull,Cat
+End date of the notional amount-Leg 1_dtype,Cat
+End date of the notional amount-Leg 1_d_length,Cat
+End date of the notional amount-Leg 1_d_isnull,Cat
+End date of the notional amount-Leg 2_dtype,Cat
+End date of the notional amount-Leg 2_d_length,Cat
+End date of the notional amount-Leg 2_d_isnull,Cat
+Call amount_dtype,Cat
+Call amount_d_length,Cat
+Call amount_d_isnull,Cat
+Call currency_dtype,Cat
+Call currency_d_length,Cat
+Call currency_d_isnull,Cat
+Put amount_dtype,Cat
+Put amount_d_length,Cat
+Put amount_d_isnull,Cat
+Put currency_dtype,Cat
+Put currency_d_length,Cat
+Put currency_d_isnull,Cat
+Exchange rate_dtype,Cat
+Exchange rate_d_length,Cat
+Exchange rate_d_isnull,Cat
+Exchange rate basis_dtype,Cat
+Exchange rate basis_d_length,Cat
+Exchange rate basis_d_isnull,Cat
+First exercise date_dtype,Cat
+First exercise date_d_length,Cat
+First exercise date_d_isnull,Cat
+Fixed rate-Leg 1_dtype,Cat
+Fixed rate-Leg 1_d_length,Cat
+Fixed rate-Leg 1_d_isnull,Cat
+Fixed rate-Leg 2_dtype,Cat
+Fixed rate-Leg 2_d_length,Cat
+Fixed rate-Leg 2_d_isnull,Cat
+Option Premium Amount_dtype,Cat
+Option Premium Amount_d_length,Cat
+Option Premium Amount_d_isnull,Cat
+Option Premium Currency_dtype,Cat
+Option Premium Currency_d_length,Cat
+Option Premium Currency_d_isnull,Cat
+Price_dtype,Cat
+Price_d_length,Cat
+Price_d_isnull,Cat
+Price unit of measure_dtype,Cat
+Price unit of measure_d_length,Cat
+Price unit of measure_d_isnull,Cat
+Spread-Leg 1_dtype,Cat
+Spread-Leg 1_d_length,Cat
+Spread-Leg 1_d_isnull,Cat
+Spread-Leg 2_dtype,Cat
+Spread-Leg 2_d_length,Cat
+Spread-Leg 2_d_isnull,Cat
+Spread currency-Leg 1_dtype,Cat
+Spread currency-Leg 1_d_length,Cat
+Spread currency-Leg 1_d_isnull,Cat
+Spread currency-Leg 2_dtype,Cat
+Spread currency-Leg 2_d_length,Cat
+Spread currency-Leg 2_d_isnull,Cat
+Strike Price_dtype,Cat
+Strike Price_d_length,Cat
+Strike Price_d_isnull,Cat
+Strike price currency/currency pair_dtype,Cat
+Strike price currency/currency pair_d_length,Cat
+Strike price currency/currency pair_d_isnull,Cat
+Post-priced swap indicator_dtype,Cat
+Post-priced swap indicator_d_length,Cat
+Post-priced swap indicator_d_isnull,Cat
+Price currency_dtype,Cat
+Price currency_d_length,Cat
+Price currency_d_isnull,Cat
+Price notation_dtype,Cat
+Price notation_d_length,Cat
+Price notation_d_isnull,Cat
+Spread notation-Leg 1_dtype,Cat
+Spread notation-Leg 1_d_length,Cat
+Spread notation-Leg 1_d_isnull,Cat
+Spread notation-Leg 2_dtype,Cat
+Spread notation-Leg 2_d_length,Cat
+Spread notation-Leg 2_d_isnull,Cat
+Strike price notation_dtype,Cat
+Strike price notation_d_length,Cat
+Strike price notation_d_isnull,Cat
+Fixed rate day count convention-leg 1_dtype,Cat
+Fixed rate day count convention-leg 1_d_length,Cat
+Fixed rate day count convention-leg 1_d_isnull,Cat
+Fixed rate day count convention-leg 2_dtype,Cat
+Fixed rate day count convention-leg 2_d_length,Cat
+Fixed rate day count convention-leg 2_d_isnull,Cat
+Floating rate day count convention-leg 1_dtype,Cat
+Floating rate day count convention-leg 1_d_length,Cat
+Floating rate day count convention-leg 1_d_isnull,Cat
+Floating rate day count convention-leg 2_dtype,Cat
+Floating rate day count convention-leg 2_d_length,Cat
+Floating rate day count convention-leg 2_d_isnull,Cat
+Floating rate reset frequency period-leg 1_dtype,Cat
+Floating rate reset frequency period-leg 1_d_length,Cat
+Floating rate reset frequency period-leg 1_d_isnull,Cat
+Floating rate reset frequency period-leg 2_dtype,Cat
+Floating rate reset frequency period-leg 2_d_length,Cat
+Floating rate reset frequency period-leg 2_d_isnull,Cat
+Floating rate reset frequency period multiplier-leg 1_dtype,Cat
+Floating rate reset frequency period multiplier-leg 1_d_length,Cat
+Floating rate reset frequency period multiplier-leg 1_d_isnull,Cat
+Floating rate reset frequency period multiplier-leg 2_dtype,Cat
+Floating rate reset frequency period multiplier-leg 2_d_length,Cat
+Floating rate reset frequency period multiplier-leg 2_d_isnull,Cat
+Other payment amount_dtype,Cat
+Other payment amount_d_length,Cat
+Other payment amount_d_isnull,Cat
+Fixed rate payment frequency period-Leg 1_dtype,Cat
+Fixed rate payment frequency period-Leg 1_d_length,Cat
+Fixed rate payment frequency period-Leg 1_d_isnull,Cat
+Floating rate payment frequency period-Leg 1_dtype,Cat
+Floating rate payment frequency period-Leg 1_d_length,Cat
+Floating rate payment frequency period-Leg 1_d_isnull,Cat
+Fixed rate payment frequency period-Leg 2_dtype,Cat
+Fixed rate payment frequency period-Leg 2_d_length,Cat
+Fixed rate payment frequency period-Leg 2_d_isnull,Cat
+Floating rate payment frequency period-Leg 2_dtype,Cat
+Floating rate payment frequency period-Leg 2_d_length,Cat
+Floating rate payment frequency period-Leg 2_d_isnull,Cat
+Fixed rate payment frequency period multiplier-Leg 1_dtype,Cat
+Fixed rate payment frequency period multiplier-Leg 1_d_length,Cat
+Fixed rate payment frequency period multiplier-Leg 1_d_isnull,Cat
+Floating rate payment frequency period multiplier-Leg 1_dtype,Cat
+Floating rate payment frequency period multiplier-Leg 1_d_length,Cat
+Floating rate payment frequency period multiplier-Leg 1_d_isnull,Cat
+Fixed rate payment frequency period multiplier-Leg 2_dtype,Cat
+Fixed rate payment frequency period multiplier-Leg 2_d_length,Cat
+Fixed rate payment frequency period multiplier-Leg 2_d_isnull,Cat
+Floating rate payment frequency period multiplier-Leg 2_dtype,Cat
+Floating rate payment frequency period multiplier-Leg 2_d_length,Cat
+Floating rate payment frequency period multiplier-Leg 2_d_isnull,Cat
+Other payment type_dtype,Cat
+Other payment type_d_length,Cat
+Other payment type_d_isnull,Cat
+Other payment currency_dtype,Cat
+Other payment currency_d_length,Cat
+Other payment currency_d_isnull,Cat
+Settlement currency-Leg 1_dtype,Cat
+Settlement currency-Leg 1_d_length,Cat
+Settlement currency-Leg 1_d_isnull,Cat
+Settlement currency-Leg 2_dtype,Cat
+Settlement currency-Leg 2_d_length,Cat
+Settlement currency-Leg 2_d_isnull,Cat
+Settlement location_dtype,Cat
+Settlement location_d_length,Cat
+Settlement location_d_isnull,Cat
+Collateralisation category_dtype,Cat
+Collateralisation category_d_length,Cat
+Collateralisation category_d_isnull,Cat
+Custom basket indicator_dtype,Cat
+Custom basket indicator_d_length,Cat
+Custom basket indicator_d_isnull,Cat
+Index factor_dtype,Cat
+Index factor_d_length,Cat
+Index factor_d_isnull,Cat
+Underlier ID-Leg 1_dtype,Cat
+Underlier ID-Leg 1_d_length,Cat
+Underlier ID-Leg 1_d_isnull,Cat
+Underlier ID-Leg 2_dtype,Cat
+Underlier ID-Leg 2_d_length,Cat
+Underlier ID-Leg 2_d_isnull,Cat
+Underlier ID source-Leg 1_dtype,Cat
+Underlier ID source-Leg 1_d_length,Cat
+Underlier ID source-Leg 1_d_isnull,Cat
+Underlying Asset Name_dtype,Cat
+Underlying Asset Name_d_length,Cat
+Underlying Asset Name_d_isnull,Cat
+Underlying asset subtype or underlying contract subtype-Leg 1_dtype,Cat
+Underlying asset subtype or underlying contract subtype-Leg 1_d_length,Cat
+Underlying asset subtype or underlying contract subtype-Leg 1_d_isnull,Cat
+Underlying asset subtype or underlying contract subtype-Leg 2_dtype,Cat
+Underlying asset subtype or underlying contract subtype-Leg 2_d_length,Cat
+Underlying asset subtype or underlying contract subtype-Leg 2_d_isnull,Cat
+Embedded Option type_dtype,Cat
+Embedded Option type_d_length,Cat
+Embedded Option type_d_isnull,Cat
+Option Type_dtype,Cat
+Option Type_d_length,Cat
+Option Type_d_isnull,Cat
+Option Style_dtype,Cat
+Option Style_d_length,Cat
+Option Style_d_isnull,Cat
+Package indicator_dtype,Cat
+Package indicator_d_length,Cat
+Package indicator_d_isnull,Cat
+Package transaction price_dtype,Cat
+Package transaction price_d_length,Cat
+Package transaction price_d_isnull,Cat
+Package transaction price currency_dtype,Cat
+Package transaction price currency_d_length,Cat
+Package transaction price currency_d_isnull,Cat
+Package transaction price notation_dtype,Cat
+Package transaction price notation_d_length,Cat
+Package transaction price notation_d_isnull,Cat
+Package transaction spread_dtype,Cat
+Package transaction spread_d_length,Cat
+Package transaction spread_d_isnull,Cat
+Package transaction spread currency_dtype,Cat
+Package transaction spread currency_d_length,Cat
+Package transaction spread currency_d_isnull,Cat
+Package transaction spread notation_dtype,Cat
+Package transaction spread notation_d_length,Cat
+Package transaction spread notation_d_isnull,Cat
+Physical delivery location-Leg 1_dtype,Cat
+Physical delivery location-Leg 1_d_length,Cat
+Physical delivery location-Leg 1_d_isnull,Cat
+Delivery Type_dtype,Cat
+Delivery Type_d_length,Cat
+Delivery Type_d_isnull,Cat
+Unique Product Identifier_dtype,Cat
+Unique Product Identifier_d_length,Cat
+Unique Product Identifier_d_isnull,Cat
+UPI FISN_dtype,Cat
+UPI FISN_d_length,Cat
+UPI FISN_d_isnull,Cat
+UPI Underlier Name_dtype,Cat
+UPI Underlier Name_d_length,Cat
+UPI Underlier Name_d_isnull,Cat
