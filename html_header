@@ -11,3 +11,75 @@
         </ul>
     </div>
 </div>
+
+
+
+---------------------------------------
+
+Executive summary 
+
+<div style="border: 1px solid #ddd; padding: 20px; background-color: #f0f4f8; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); max-width: 600px; margin: 20px auto;">
+    <div style="font-size: 1.5em; color: #007acc; margin-bottom: 10px; border-bottom: 2px solid #007acc; padding-bottom: 5px;">
+        1. EXEC SUMMARY
+    </div>
+    <div style="display: flex; justify-content: space-between;">
+        <div style="max-width: 30%; padding: 10px;">
+            <h2 style="color: #ff6347;">Dynamic Regulatory Regime</h2>
+            <ul style="list-style-type: none; padding: 0;">
+                <li>~700 data points</li>
+                <li>~20 data sources</li>
+                <li>~15 regulations</li>
+                <li>~1.5m transactions per day</li>
+                <li>4000 – 5000 controls for full coverage (based on number of fields, regulation, enrichment steps...)</li>
+            </ul>
+        </div>
+        <div style="max-width: 30%; padding: 10px;">
+            <h2 style="color: #ff6347;">Problem Statement</h2>
+            <ul style="list-style-type: none; padding: 0;">
+                <li>The rule-based quality management systems are difficult to keep pace with rapidly changing regulatory environments across various jurisdictions and they are always lagging the development cycle and production releases.</li>
+            </ul>
+        </div>
+        <div style="max-width: 30%; padding: 10px;">
+            <h2 style="color: #ff6347;">Proposed Solution</h2>
+            <ul style="list-style-type: none; padding: 0;">
+                <li>AI/ML based data quality and transaction monitoring system provide faster feedbacks, better anomaly detection and generate real-time insights.</li>
+                <li>ML is capable to identify data issues and patterns with proactive approach rather than relying on manually configuring them.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+-----------------------
+
+model prediction
+
+<div style="border: 1px solid #ddd; padding: 20px; background-color: #f9fafc; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); max-width: 600px; margin: 20px auto;">
+    <div style="font-size: 1.5em; color: #007acc; margin-bottom: 10px; border-bottom: 2px solid #007acc; padding-bottom: 5px;">
+        🚀 Model Prediction
+    </div>
+    <div style="font-size: 1em; line-height: 1.6; color: #444; background-color: #eaf2f8; padding: 10px; border-radius: 5px;">
+        <p>Required Models are loaded and data is input to predict function.</p>
+        <p>Random sample of 100 records are used for prediction. The feature 'quote.value.Quantity' is multiplied by -1 to check if the model is able to predict its anomaly.</p>
+    </div>
+</div>
+
+
+-------------------
+
+model training 
+
+<div style="border: 1px solid #ddd; padding: 20px; background-color: #f9fafc; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); max-width: 600px; margin: 20px auto;">
+    <div style="font-size: 1.5em; color: #007acc; margin-bottom: 10px; border-bottom: 2px solid #007acc; padding-bottom: 5px;">
+        ⚙️ Model Training
+    </div>
+    <div style="font-size: 1em; line-height: 1.6; color: #444; background-color: #eaf2f8; padding: 10px; border-radius: 5px;">
+        <ul style="list-style-type: none; padding: 0;">
+            <li><strong>LocalOutlierFactor</strong> model is used for unsupervised learning.</li>
+            <li>It considers as outliers the samples that have a substantially lower density than their neighbors.</li>
+            <li>Data will be trained per product per feature. So there will be micro models for each feature and each product (Simpler solution).</li>
+            <li>POC is done for numeric features.</li>
+            <li>For category data we need...</li>
+        </ul>
+    </div>
+</div>
