@@ -83,3 +83,24 @@ model training
         </ul>
     </div>
 </div>
+
+
+----- ```mermaid
+graph TD;
+    A[Sourcing] --> B[Ingest];
+    B --> C[Store];
+    C --> D[Machine Learning];
+    D --> E[Serve];
+
+    A -->|Streaming Data<br>Batch Data| B;
+    B -->|Kafka Queues<br>Database| C;
+    C -->|Data Lake| D;
+    D -->|Data Normalization<br>Data Scaling<br>Data Encoding<br>SMOTE<br>Evaluate & Train<br>Save Model| E;
+    E -->|BI<br>Application<br>Model Serving<br>Model Repository| F[End];
+
+    subgraph Highlights
+    H1[Model per product, and cluster of related columns]
+    H2[Unsupervised for anomaly detection]
+    H3[Supervised for ACK/NACK or data tagging]
+    H4[Time series models for volumetric to remove seasonality]
+    end
