@@ -1,0 +1,72 @@
+<style>
+    .container {
+        display: flex;
+        justify-content: space-between;
+        border: 1px solid #ddd;
+        padding: 20px;
+        background-color: #f0f4f8;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        animation: fadeIn 1.5s ease-in-out;
+    }
+    .section {
+        max-width: 30%;
+        padding: 15px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        transition: transform 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .section:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    h2 {
+        color: #007acc;
+        font-size: 1.3em;
+        margin-bottom: 10px;
+        border-bottom: 2px solid #007acc;
+    }
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+    li {
+        margin-bottom: 10px;
+        line-height: 1.6;
+        color: #444;
+        background-color: #eaf2f8;
+        padding: 8px;
+        border-radius: 5px;
+    }
+    @keyframes fadeIn {
+        from {opacity: 0;}
+        to {opacity: 1;}
+    }
+</style>
+
+<div class="container">
+    <div class="section">
+        <h2>Dynamic Regulatory Regime</h2>
+        <ul>
+            <li>~700 data points</li>
+            <li>~20 data sources</li>
+            <li>~15 regulations</li>
+            <li>~1.5m transactions per day</li>
+            <li>4000 – 5000 controls for full coverage (based on number of fields, regulation, enrichment steps...)</li>
+        </ul>
+    </div>
+    <div class="section">
+        <h2>Problem Statement</h2>
+        <ul>
+            <li>The rule-based quality management systems are difficult to keep pace with rapidly changing regulatory environments across various jurisdictions and they are always lagging the development cycle and production releases.</li>
+        </ul>
+    </div>
+    <div class="section">
+        <h2>Proposed Solution</h2>
+        <ul>
+            <li>AI/ML based data quality and transaction monitoring system provide faster feedbacks, better anomaly detection and generate real-time insights.</li>
+            <li>ML is capable to identify data issues and patterns with proactive approach rather than relying on manually configuring them.</li>
+        </ul>
+    </div>
+</div>
