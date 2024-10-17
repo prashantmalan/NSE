@@ -104,3 +104,38 @@ graph TD;
     H3[Supervised for ACK/NACK or data tagging]
     H4[Time series models for volumetric to remove seasonality]
     end
+---------------------------------------------------
+
+<div style="display: flex; flex-wrap: wrap; justify-content: space-around; padding: 20px; background-color: #f9fafc; border-radius: 8px;">
+    <div style="flex: 1 1 30%; margin: 10px; padding: 20px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); transition: transform 0.3s, box-shadow 0.3s; cursor: pointer;">
+        <h3 style="color: #005f99;">💡 Automated Anomaly Detection</h3>
+        <p style="color: #333;"> Real-time identification of errors and inconsistencies, scoring, flagging, and casing a transaction.</p>
+    </div>
+    <div style="flex: 1 1 30%; margin: 10px; padding: 20px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); transition: transform 0.3s, box-shadow 0.3s; cursor: pointer;">
+        <h3 style="color: #005f99;">🔌 Plug and Play</h3>
+        <p style="color: #333;">Monitoring can be integrated at any step of the trade life cycle. Train on any data and use it to monitor the discrepancy in new data with respect to trained data.</p>
+    </div>
+    <div style="flex: 1 1 30%; margin: 10px; padding: 20px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); transition: transform 0.3s, box-shadow 0.3s; cursor: pointer;">
+        <h3 style="color: #005f99;">🧹 Predictive Data Cleansing Proposals</h3>
+        <p style="color: #333;">Monitoring can be integrated at any step of the trade life cycle. Train on any data and use it to monitor the discrepancy in new data with respect to trained data.</p>
+    </div>
+    <div style="flex: 1 1 30%; margin: 10px; padding: 20px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); transition: transform 0.3s, box-shadow 0.3s; cursor: pointer;">
+        <h3 style="color: #005f99;">👷 Automated QA</h3>
+        <p style="color: #333;">Automated detection of similar transactions between two data sets without defining keys or matching parameters.</p>
+    </div>
+    <div style="flex: 1 1 30%; margin: 10px; padding: 20px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); transition: transform 0.3s, box-shadow 0.3s; cursor: pointer;">
+        <h3 style="color: #005f99;">❌ NO Manual Rule Configuration</h3>
+        <p style="color: #333;">Auto identification of data patterns, helps businesses to understand data before defining business requirements.</p>
+    </div>
+    <div style="flex: 1 1 30%; margin: 10px; padding: 20px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); transition: transform 0.3s, box-shadow 0.3s; cursor: pointer;">
+        <h3 style="color: #005f99;">🔗 Link External News to Deviations</h3>
+        <p style="color: #333;">Use ICACIB accepted LLM to bullet point the news and integrate it to explain the deviation.</p>
+    </div>
+</div>
+
+<style>
+div:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+</style>
