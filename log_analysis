@@ -161,3 +161,205 @@ for product in products:
 # Update layout
 fig.update_layout(height=600 * num_rows, width=1200, title_text="Anomaly Detection (Deseasonalized)", showlegend=True)
 fig.show()
+
+
+
+
+
+
+
+---------------------------------------------------
+
+
+
+import pandas as pd
+import numpy as np
+from statsmodels.tsa.seasonal import seasonal_decompose
+from sklearn.ensemble import IsolationForest
+import plotly.subplots as sp
+import plotly.graph_objects as go
+import joblib
+from datetime import timedelta
+
+# Load your generated data
+#logs_df = pd.read_csv("your_generated_data.csv")  # Replace with your actual data
+
+# Convert Date_Inserted to datetime
+logs_df['Date_Inserted'] = pd.to_datetime(logs_df['Date_Inserted'])
+
+# Aggregate data by day and status
+logs_df['Date'] = logs_df['Date_Inserted'].dt.date
+aggregated_df = logs_df.groupby(['Product', 'SSRSGroupName', 'Status', 'Date']).agg({'RecCount': 'sum'}).reset_index()
+
+# Get unique combinations
+products = aggregated_df['Product'].unique()
+ssrs_reports = aggregated_df['SSRSGroupName'].unique()
+statuses = aggregated_df['Status'].unique()
+
+# Train models for each product and report
+for product in products:
+    for report in ssrs_reports:
+        # Filter data for the current product and report
+        data = aggregated_df[(aggregated_df['Product'] == product) & (aggregated_df['SSRSGroupName'] == report)]
+        
+        if data.empty:
+            print(f"No data for {product} - {report}")
+            continue
+        
+        print(f"Processing {product} - {report}")
+        
+        # Initialize a column for deseasonalized data
+        data['Deseasonalized'] = np.nan
+
+        # Decompose and deseasonalize for each status
+        for status in statuses:
+            status_data = data[data['Status'] == status].copy()
+            if not status_data.empty:
+                if len(status_data) < 30:  # Ensure enough data points
+                    print(f"Not enough data to decompose for {product} - {report} - {status}")
+                    continue
+                try:
+                    status_data.set_index('Date', inplace=True)
+                    decomposition = seasonal_decompose(status_data['RecCount'], model='additive', period=30, two_sided=False)
+                    deseasonalized = status_data['RecCount'] - decomposition.seasonal
+                    data.loc[data['Status'] == status, 'Deseasonalized'] = deseasonalized.values
+                except Exception as e:
+                    print(f"Decomposition failed for {product} - {report} - {status}: {e}")
+                    continue
+
+        # Verify if deseasonalization was successful
+        if 'Deseasonalized' not in data.columns or data['Deseasonalized'].isnull().all():
+            print(f"Failed to deseasonalize for {product} - {report}")
+            continue
+
+        # Debugging output to check DataFrame structure
+        print(data.head())
+
+        # Prepare the data for the model
+        X = data[['Deseasonalized']].fillna(0).values  # Fill NaN values if any
+
+        # Fit the Isolation Forest model
+        model = IsolationForest(contamination=0.01, random_state=42)
+        model.fit(X)
+        
+        # Save the model
+        joblib.dump(model, f"model_{product}_{report}.joblib")
+
+# Prediction and Interactive Plotting
+
+# Define the last month's date range for visualization
+end_date = pd.to_datetime(aggregated_df['Date']).max()
+start_date = end_date - timedelta(days=30)
+
+# Calculate the number of rows for a grid with 4 columns per row
+num_plots = len(products) * len(ssrs_reports)
+num_rows = (num_plots + 3) // 4
+
+# Create a subplot grid
+fig = sp.make_subplots(rows=num_rows, cols=4, subplot_titles=[])
+
+plot_count = 0
+
+for product in products:
+    for report in ssrs_reports:
+        # Filter data for the current product and report
+        data = aggregated_df[(aggregated_df['Product'] == product) & (aggregated_df['SSRSGroupName'] == report)]
+        
+        if data.empty:
+            continue
+        
+        # Initialize a column for deseasonalized data
+        data['Deseasonalized'] = np.nan
+
+        # Decompose and deseasonalize for each status
+        for status in statuses:
+            status_data = data[data['Status'] == status].copy()
+            if not status_data.empty:
+                try:
+                    status_data.set_index('Date', inplace=True)
+                    decomposition = seasonal_decompose(status_data['RecCount'], model='additive', period=30, two_sided=False)
+                    deseasonalized = status_data['RecCount'] - decomposition.seasonal
+                    data.loc[data['Status'] == status, 'Deseasonalized'] = deseasonalized.values
+                except Exception as e:
+                    print(f"Decomposition failed during prediction for {product} - {report} - {status}: {e}")
+                    continue
+
+        if 'Deseasonalized' not in data.columns or data['Deseasonalized'].isnull().all():
+            print(f"Failed to deseasonalize during prediction for {product} - {report}")
+            continue
+
+        # Load the model
+        model = joblib.load(f"model_{product}_{report}.joblib")
+
+        # Predict anomalies
+        X = data[['Deseasonalized']].fillna(0).values
+        data['Anomaly'] = model.predict(X)
+
+        # Filter last month's data
+        last_month_data = data[(pd.to_datetime(data['Date']) >= start_date) & (pd.to_datetime(data['Date']) <= end_date)]
+        
+        # Determine the subplot position
+        row = (plot_count // 4) + 1
+        col = (plot_count % 4) + 1
+
+        # Create a trace for each status
+        traces = []
+        for status in statuses:
+            status_data = last_month_data[last_month_data['Status'] == status]
+            if not status_data.empty:
+                trace = go.Scatter(
+                    x=status_data['Date'],
+                    y=status_data['RecCount'],  # Use real values for hover
+                    mode='lines+markers',
+                    marker=dict(color=['red' if a == -1 else 'blue' for a in status_data['Anomaly']]),
+                    name=f'{status}',
+                    visible=False,  # Set initial visibility
+                    hoverinfo='x+y+text',
+                    text=[f"Date: {d}<br>Status: {status}<br>Real Value: {v}" for d, v in zip(status_data['Date'], status_data['RecCount'])]
+                )
+                traces.append(trace)
+                fig.add_trace(trace, row=row, col=col)
+
+        # Add buttons for the dropdown menus
+        fig.update_layout(
+            updatemenus=[
+                dict(
+                    active=0,
+                    buttons=[
+                        dict(label='All',
+                             method='update',
+                             args=[{'visible': [True] * len(traces)},
+                                   {'title': f"Anomaly Detection - All Statuses for {product} - {report}"}]),
+                    ] + [
+                        dict(label=status,
+                             method='update',
+                             args=[{'visible': [j == k for j, _ in enumerate(traces)]},
+                                   {'title': f"Anomaly Detection for {product} - {report} - {status}"}])
+                        for k, status in enumerate(statuses)
+                    ],
+                    direction='down',
+                    x=0.1,
+                    xanchor='left',
+                    y=1.15,
+                    yanchor='top'
+                ),
+                dict(
+                    active=0,
+                    buttons=[dict(label=report, method='update', args=[{'visible': [report_index_map[report] == plot_count // len(statuses)] * len(traces)}]) for report in ssrs_reports],
+                    direction='down',
+                    x=0.2,
+                    xanchor='left',
+                    y=1.15,
+                    yanchor='top'
+                )
+            ]
+        )
+
+        # Set the title for each subplot
+        fig.update_xaxes(title_text=f"{product} - {report}", row=row, col=col)
+
+        plot_count += 1
+
+# Update layout
+fig.update_layout(height=400 * num_rows, width=1200, title_text="Anomaly Detection (Real Values)", showlegend=True)
+fig.show()
