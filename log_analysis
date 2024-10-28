@@ -363,3 +363,190 @@ for product in products:
 # Update layout
 fig.update_layout(height=400 * num_rows, width=1200, title_text="Anomaly Detection (Real Values)", showlegend=True)
 fig.show()
+
+
+---------------------------------------------------------------------------------------------------------------------
+
+
+import pandas as pd
+import numpy as np
+from statsmodels.tsa.seasonal import seasonal_decompose
+from sklearn.ensemble import IsolationForest
+import plotly.subplots as sp
+import plotly.graph_objects as go
+import joblib
+from datetime import timedelta
+
+def load_and_prepare_data(file_path):
+    # Load your generated data
+    logs_df = pd.read_csv(file_path)
+    
+    # Convert Date_Inserted to datetime
+    logs_df['Date_Inserted'] = pd.to_datetime(logs_df['Date_Inserted'])
+    
+    # Aggregate data by day and status
+    logs_df['Date'] = logs_df['Date_Inserted'].dt.date
+    aggregated_df = logs_df.groupby(['SSRSGroupName', 'Product', 'Status', 'Date']).agg({'RecCount': 'sum'}).reset_index()
+    
+    return aggregated_df
+
+def train_and_save_models(aggregated_df, cutoff_date):
+    ssrs_reports = aggregated_df['SSRSGroupName'].unique()
+    products = aggregated_df['Product'].unique()
+    statuses = aggregated_df['Status'].unique()
+    
+    for report in ssrs_reports:
+        for product in products:
+            data = aggregated_df[(aggregated_df['SSRSGroupName'] == report) & (aggregated_df['Product'] == product)]
+            training_data = data[pd.to_datetime(data['Date']) < cutoff_date]
+            
+            if training_data.empty:
+                print(f"No training data for {report} - {product}")
+                continue
+                
+            training_data['Deseasonalized'] = np.nan
+
+            for status in statuses:
+                status_data = training_data[training_data['Status'] == status].copy()
+                if not status_data.empty and len(status_data) >= 30:
+                    try:
+                        status_data.set_index('Date', inplace=True)
+                        decomposition = seasonal_decompose(status_data['RecCount'], model='additive', period=30, two_sided=False)
+                        deseasonalized = status_data['RecCount'] - decomposition.seasonal
+                        training_data.loc[training_data['Status'] == status, 'Deseasonalized'] = deseasonalized.values
+                    except Exception as e:
+                        print(f"Decomposition failed for {report} - {product} - {status}: {e}")
+                        continue
+            
+            if 'Deseasonalized' not in training_data.columns or training_data['Deseasonalized'].isnull().all():
+                print(f"Failed to deseasonalize for {report} - {product}")
+                continue
+
+            X = training_data[['Deseasonalized']].fillna(0).values
+
+            model = IsolationForest(contamination=0.01, random_state=42)
+            model.fit(X)
+            
+            joblib.dump(model, f"model_{report}_{product}.joblib")
+
+def predict_and_plot(aggregated_df, start_date, end_date):
+    ssrs_reports = aggregated_df['SSRSGroupName'].unique()
+    products = aggregated_df['Product'].unique()
+    statuses = aggregated_df['Status'].unique()
+
+    num_plots = len(ssrs_reports) * len(products)
+    num_rows = (num_plots + 3) // 4
+
+    fig = sp.make_subplots(rows=num_rows, cols=4, subplot_titles=[])
+
+    plot_count = 0
+    report_index_map = {report: idx for idx, report in enumerate(ssrs_reports)}
+
+    for report in ssrs_reports:
+        for product in products:
+            data = aggregated_df[(aggregated_df['SSRSGroupName'] == report) & (aggregated_df['Product'] == product)]
+            prediction_data = data[(pd.to_datetime(data['Date']) >= start_date) & (pd.to_datetime(data['Date']) <= end_date)]
+            
+            if prediction_data.empty:
+                print(f"No prediction data for {report} - {product}")
+                continue
+
+            prediction_data['Deseasonalized'] = np.nan
+
+            for status in statuses:
+                status_data = prediction_data[prediction_data['Status'] == status].copy()
+                if not status_data.empty:
+                    try:
+                        status_data.set_index('Date', inplace=True)
+                        decomposition = seasonal_decompose(status_data['RecCount'], model='additive', period=7, two_sided=False)
+                        deseasonalized = status_data['RecCount'] - decomposition.seasonal
+                        prediction_data.loc[prediction_data['Status'] == status, 'Deseasonalized'] = deseasonalized.values
+                    except Exception as e:
+                        print(f"Decomposition failed during prediction for {report} - {product} - {status}: {e}")
+                        continue
+
+            if 'Deseasonalized' not in prediction_data.columns or prediction_data['Deseasonalized'].isnull().all():
+                print(f"Failed to deseasonalize during prediction for {report} - {product}")
+                continue
+
+            model = joblib.load(f"model_{report}_{product}.joblib")
+
+            X = prediction_data[['Deseasonalized']].fillna(0).values
+            prediction_data['Anomaly'] = model.predict(X)
+
+            last_month_data = prediction_data
+            
+            row = (plot_count // 4) + 1
+            col = (plot_count % 4) + 1
+
+            traces = []
+            for status in statuses:
+                status_data = last_month_data[last_month_data['Status'] == status]
+                if not status_data.empty:
+                    trace = go.Scatter(
+                        x=status_data['Date'],
+                        y=status_data['RecCount'],
+                        mode='lines+markers',
+                        marker=dict(
+                            color=['red' if a == -1 else 'blue' for a in status_data['Anomaly']],
+                            size=[10 if a == -1 else 5 for a in status_data['Anomaly']],  # Larger red markers for anomalies
+                        ),
+                        name=f'{status}',
+                        visible=False,
+                        hoverinfo='x+y+text',
+                        text=[f"Date: {d}<br>Status: {status}<br>Real Value: {v}" for d, v in zip(status_data['Date'], status_data['RecCount'])]
+                    )
+                    traces.append(trace)
+                    fig.add_trace(trace, row=row, col=col)
+
+            # Update the visibility logic for the SSRS GroupName filter
+            fig.update_layout(
+    updatemenus=[
+        dict(
+            active=0,
+            buttons=[
+                dict(label='All',
+                     method='update',
+                     args=[{'visible': [True] * len(traces)},
+                           {'title': f"Anomaly Detection - All Statuses for {report} - {product}"}]),
+            ] + [
+                dict(label=status,
+                     method='update',
+                     args=[{'visible': [j == k for j, _ in enumerate(traces)]},
+                           {'title': f"Anomaly Detection for {report} - {product} - {status}"}])
+                for k, status in enumerate(statuses)
+            ],
+            direction='down',
+            x=0.1,
+            xanchor='left',
+            y=1.05,  # Adjusted to reduce top space
+            yanchor='top'
+        )
+    ]
+)
+
+fig.update_layout(
+    height=400 * num_rows,
+    width=1200,
+    showlegend=False,
+    title_text="Anomaly Detection (Real Values)",
+    margin=dict(t=50),  # Reduce the top margin to minimize empty space
+    xaxis=dict(title_font=dict(size=10)),  # Smaller font for x-axis labels
+    yaxis=dict(title_font=dict(size=10))
+)
+fig.show()
+
+# Main Execution
+file_path = "logs_data.csv"  # Replace with your actual data path
+aggregated_df = load_and_prepare_data(file_path)
+
+# Define cutoff dates
+end_date = pd.to_datetime(aggregated_df['Date']).max()
+cutoff_date = end_date - timedelta(days=30)
+
+# Train and save models using data older than one month
+train_and_save_models(aggregated_df, cutoff_date)
+
+# Predict and plot using the last month's data
+start_date = cutoff_date
+predict_and_plot(aggregated_df, start_date, end_date)
