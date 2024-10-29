@@ -762,3 +762,82 @@ predictions = predict(aggregated_df, start_date, end_date)
 
 # Plot the predictions
 plot(predictions)
+
+
+----------------------------------------
+-------------------------------
+
+def plot(predictions):
+    num_plots = len(predictions)
+    num_rows = (num_plots + 3) // 4
+
+    fig = sp.make_subplots(rows=num_rows, cols=4, subplot_titles=[f'{report} - {product}' for report, product, _ in predictions])
+
+    all_traces = []
+
+    for idx, (report, product, prediction_data) in enumerate(predictions):
+        row = (idx // 4) + 1
+        col = (idx % 4) + 1
+
+        statuses = prediction_data['Status'].unique()
+        product_traces = []
+
+        for status in statuses:
+            status_data = prediction_data[prediction_data['Status'] == status]
+            if not status_data.empty:
+                trace = go.Scatter(
+                    x=status_data['Date'],
+                    y=status_data['RecCount'],
+                    mode='lines+markers',
+                    marker=dict(
+                        color=['red' if a == -1 else 'blue' for a in status_data['Anomaly']],
+                        size=[10 if a == -1 else 5 for a in status_data['Anomaly']],
+                    ),
+                    name=f'{status} - {report} - {product}',
+                    hoverinfo='x+y+text',
+                    text=[f"Date: {d}<br>Status: {status}<br>Real Value: {v}" for d, v in zip(status_data['Date'], status_data['RecCount'])],
+                    visible=False  # Initially set to False
+                )
+                product_traces.append(trace)
+                fig.add_trace(trace, row=row, col=col)
+
+        all_traces.append(product_traces)
+
+    # Create a global filter
+    statuses = [status for _, _, prediction_data in predictions for status in prediction_data['Status'].unique()]
+    unique_statuses = list(set(statuses))
+
+    updatemenus = [
+        dict(
+            active=0,
+            buttons=[
+                dict(label='All',
+                     method='update',
+                     args=[{'visible': [True] * sum(len(traces) for traces in all_traces)},
+                           {'title': "Anomaly Detection - All Statuses"}]),
+            ] + [
+                dict(label=status,
+                     method='update',
+                     args=[{'visible': [trace.name.startswith(status) for traces in all_traces for trace in traces]},
+                           {'title': f"Anomaly Detection for {status}"}])
+                for status in unique_statuses
+            ],
+            direction='down',
+            x=0.1,
+            xanchor='left',
+            y=1.15,
+            yanchor='top'
+        )
+    ]
+
+    fig.update_layout(
+        updatemenus=updatemenus,
+        height=400 * num_rows,
+        width=1200,
+        showlegend=False,
+        title_text="Anomaly Detection",
+        margin=dict(t=50),
+        xaxis=dict(title_font=dict(size=10)),
+        yaxis=dict(title_font=dict(size=10))
+    )
+    fig.show()
