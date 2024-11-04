@@ -841,3 +841,123 @@ def plot(predictions):
         yaxis=dict(title_font=dict(size=10))
     )
     fig.show()
+
+
+
+
+---------------------------------------------
+----------------------------------------------
+
+
+import pandas as pd
+import numpy as np
+from sklearn.ensemble import IsolationForest
+from sklearn.svm import OneClassSVM
+from sklearn.neighbors import LocalOutlierFactor
+import plotly.subplots as sp
+import plotly.graph_objects as go
+from datetime import timedelta
+from sklearn.preprocessing import StandardScaler
+
+def load_and_prepare_data(file_path):
+    logs_df = pd.read_csv(file_path)
+    logs_df['Date_Inserted'] = pd.to_datetime(logs_df['Date_Inserted'])
+    logs_df['Date'] = logs_df['Date_Inserted'].dt.date
+    aggregated_df = logs_df.groupby(['Product', 'SSRSGroupName', 'Status', 'Date']).agg({'RecCount': 'sum'}).reset_index()
+    return aggregated_df
+
+def preprocess_data(aggregated_df, start_date, end_date, product, ssrs_group):
+    # Filter data for the given date range, product, and SSRS group name
+    data = aggregated_df[(pd.to_datetime(aggregated_df['Date']) >= start_date) & 
+                         (pd.to_datetime(aggregated_df['Date']) <= end_date) &
+                         (aggregated_df['Product'] == product) &
+                         (aggregated_df['SSRSGroupName'] == ssrs_group)]
+    
+    # Aggregate data to ensure unique Date-Status combinations
+    data = data.groupby(['Date', 'Status']).agg({'RecCount': 'sum'}).reset_index()
+    
+    # Pivot data to have a single row per date
+    pivoted_data = data.pivot(index='Date', columns='Status', values='RecCount').fillna(0).reset_index()
+    
+    # Calculate total for additional insight
+    pivoted_data['Total'] = pivoted_data.drop(columns='Date').sum(axis=1)
+    
+    # Standardize the data
+    scaler = StandardScaler()
+    X = scaler.fit_transform(pivoted_data.drop(columns=['Date', 'Total']))
+    
+    return pivoted_data, X
+
+def plot_results(pivoted_data, labels_dict, product, ssrs_group):
+    num_models = len(labels_dict)
+    fig = sp.make_subplots(rows=1, cols=num_models, subplot_titles=list(labels_dict.keys()))
+    
+    for i, (model_name, labels) in enumerate(labels_dict.items(), start=1):
+        # Create hover text with all status information for each date
+        hover_texts = [
+            f"Date: {row['Date']}<br>" + "<br>".join([f"{status}: {value}" for status, value in row.items() if status not in ['Date', 'Total']])
+            for _, row in pivoted_data.iterrows()
+        ]
+
+        trace = go.Scatter(
+            x=pivoted_data['Date'],
+            y=pivoted_data['Total'],
+            mode='markers',
+            marker=dict(
+                color=['red' if label == -1 else 'blue' for label in labels],
+                size=[10 if label == -1 else 5 for label in labels],
+            ),
+            text=hover_texts,
+            hoverinfo='text'
+        )
+        fig.add_trace(trace, row=1, col=i)
+
+    fig.update_layout(
+        title=f"Anomaly Detection for {product} - {ssrs_group}",
+        xaxis_title='Date',
+        yaxis_title='Total Count',
+        height=500,
+        width=300 * num_models,
+        showlegend=False
+    )
+    fig.show()
+
+def run_models(file_path):
+    aggregated_df = load_and_prepare_data(file_path)
+    
+    # Define cutoff dates
+    end_date = pd.to_datetime(aggregated_df['Date']).max()
+    start_date = end_date - timedelta(days=30)
+
+    products = aggregated_df['Product'].unique()
+    ssrs_groups = aggregated_df['SSRSGroupName'].unique()
+
+    for product in products:
+        for ssrs_group in ssrs_groups:
+            pivoted_data, X = preprocess_data(aggregated_df, start_date, end_date, product, ssrs_group)
+
+            if X.size == 0:
+                continue  # Skip if no data is available for this combination
+
+            labels_dict = {}
+
+            # Isolation Forest
+            iso_forest = IsolationForest(contamination=0.01, random_state=42)
+            iso_labels = iso_forest.fit_predict(X)
+            labels_dict['Isolation Forest'] = iso_labels
+
+            # One-Class SVM
+            one_class_svm = OneClassSVM(nu=0.01, kernel='rbf', gamma='auto')
+            svm_labels = one_class_svm.fit_predict(X)
+            labels_dict['One-Class SVM'] = svm_labels
+
+            # Local Outlier Factor (LOF)
+            lof = LocalOutlierFactor(n_neighbors=20, contamination=0.01, novelty=False)
+            lof_labels = lof.fit_predict(X)
+            labels_dict['Local Outlier Factor'] = lof_labels
+
+            plot_results(pivoted_data, labels_dict, product, ssrs_group)
+
+# Main Execution
+file_path = "logs_data.csv"  # Replace with your actual data path
+run_models(file_path)
